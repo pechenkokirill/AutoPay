@@ -1,0 +1,40 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Admin.Views.ChecksEditView">
+
+    <Design.DataContext>
+        <viewModels:ChecksEditViewModel />
+    </Design.DataContext>
+
+    <Grid Classes="m5">
+        <ListBox Items="{Binding EditableItems}">
+            <ListBox.DataTemplates>
+                <DataTemplate DataType="{x:Type viewModels:CheckViewModel}">
+                    <StackPanel Classes="h-stretch">
+                        <Expander x:Name="Expander" Classes="h-stretch" Header="{Binding Id, StringFormat=Чек\:\{0\}}" />
+                        <Border IsVisible="{Binding ElementName=Expander, Path=IsExpanded}" Classes="panel">
+                            <!--Expander Classes="h-stretch" Header="{Binding Id, StringFormat=Чек\:\{0\}}"-->
+                            <StackPanel Classes="h-stretch">
+                                <TextBlock Text="Кассир:" />
+                                <TextBox Classes="h-stretch" IsReadOnly="True" Text="{Binding Issuer}" />
+                                <TextBlock Text="Дата выдачи:" />
+                                <TextBox Classes="h-stretch" IsReadOnly="True" Text="{Binding IssueDate}" />
+                                <TextBlock Text="Итого:" />
+                                <TextBox Classes="h-stretch" IsReadOnly="True" Text="{Binding PaymentAmount}" />
+                                <TextBlock Text="Оплачено:" />
+                                <TextBox Classes="h-stretch" IsReadOnly="True" Text="{Binding ActualPaymentAmount}" />
+                                <TextBlock Text="Продукты:" />
+                                <ListBox Items="{Binding Lines}" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.DataTemplates>
+        </ListBox>
+    </Grid>
+
+</UserControl>

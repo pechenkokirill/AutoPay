@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+             xmlns:responses="clr-namespace:AutoPay.Common.DTOs.Responses;assembly=AutoPay.Common"
+             xmlns:converters="clr-namespace:AutoPay.UI.Admin.Converters"
+             xmlns:commonViewModels="clr-namespace:AutoPay.UI.Admin.ViewModels;assembly=AutoPay.UI.Common"
+             xmlns:commonViewModels1="clr-namespace:AutoPay.UI.Common.ViewModels;assembly=AutoPay.UI.Common"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Admin.Views.ImagesEditView">
+
+    <Design.DataContext>
+        <viewModels:ImagesEditViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="* Auto">
+        <ListBox Items="{Binding EditableItems}" SelectedItem="{Binding SelectedData}">
+                <ListBox.DataTemplates>
+                    <DataTemplate DataType="{x:Type commonViewModels1:ImageViewModel}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Id}"/>
+                            <Grid Width="256" Height="256" Classes="center">
+                                <Image Source="{Binding Bitmap}"/>
+                                <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.DataTemplates>
+            </ListBox>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+            <Button Grid.Column="0" Classes="stretch" Content="Удалить" IsEnabled="{Binding !!SelectedData}" Command="{Binding DeleteCommand}"/>
+            <Button Grid.Column="1" Classes="stretch" Content="Добавить" Command="{Binding AddCommand}"/>
+        </Grid>
+    </Grid>
+
+</UserControl>

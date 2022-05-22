@@ -1,0 +1,197 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:commonViewModels="clr-namespace:AutoPay.UI.Common.ViewModels;assembly=AutoPay.UI.Common"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+             xmlns:viewModels1="clr-namespace:AutoPay.UI.Admin.ViewModels;assembly=AutoPay.UI.Common"
+             xmlns:c="clr-namespace:AutoPay.UI.Common.Converters;assembly=AutoPay.UI.Common"
+             x:Class="AutoPay.UI.Admin.App">
+    <Application.Styles>
+        <FluentTheme Mode="Light" />
+        <StyleInclude Source="avares://AutoPay.UI.Common/Styles/CommonStyles.axaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+    </Application.Styles>
+    <Application.DataTemplates>
+        <DataTemplate DataType="commonViewModels:YesNoViewModel">
+            <Border Classes="panel" BorderBrush="{StaticResource mainBrush}" BorderThickness="5" CornerRadius="5">
+                <Grid Classes="m5" RowDefinitions="* Auto" ColumnDefinitions="* *">
+                    <TextBlock Classes="center" Text="{Binding Message}" TextWrapping="Wrap" Grid.ColumnSpan="2" />
+
+                    <Button Classes="stretch" Grid.Row="1" Grid.Column="0" Content="Да" Command="{Binding YesCommand}" />
+                    <Button Classes="stretch" Grid.Row="1" Grid.Column="1" Content="Нет" Command="{Binding NoCommand}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="commonViewModels:MessageDialogViewModel">
+            <Border Classes="panel" BorderBrush="{StaticResource mainBrush}" BorderThickness="5" CornerRadius="5">
+                <Grid Classes="m5" RowDefinitions="* Auto">
+                    <TextBlock Classes="center" Text="{Binding Message}" TextWrapping="Wrap" Grid.ColumnSpan="2" />
+
+                    <Button Classes="stretch" Grid.Row="1" Content="Закрыть" Command="{Binding CloseCommand}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:ProductAddDialogViewModel">
+            <Border Classes="panel" BorderBrush="{StaticResource mainBrush}" BorderThickness="5" CornerRadius="5">
+                <Grid Classes="m5" RowDefinitions="* Auto">
+                    <Grid Classes="m5" RowDefinitions="* Auto" ColumnDefinitions="* *">
+                        <StackPanel Grid.ColumnSpan="2">
+                            <TextBlock Text="Номер продукта" />
+                            <NumericUpDown Classes="h-stretch"
+                                           Minimum="0"
+                                           Value="{Binding Product.ProductId, Converter={x:Static c:NumericConverter.Instance}}" />
+                            <TextBlock Text="Название" />
+                            <TextBox Classes="h-stretch" Text="{Binding Product.Name}" />
+                            <TextBlock Text="Цена" />
+                            <NumericUpDown Classes="h-stretch"
+                                           Minimum="0"
+                                           Value="{Binding Product.Cost, Converter={x:Static c:NumericConverter.Instance}}" />
+                            <TextBlock Text="Еденицы измерения" />
+                            <ComboBox Classes="h-stretch"
+                                      Items="{Binding Source={x:Static viewModels:ProductAddDialogViewModel.Options}, Converter={x:Static c:UnitConverter.Instance}}"
+                                      SelectedItem="{Binding Product.Unit, Converter={x:Static c:UnitConverter.Instance}}" />
+                            <TextBlock Text="Изображение" />
+                            <ComboBox Classes="h-stretch"
+                                      SelectedItem="{Binding SelectedImage}"
+                                      Items="{Binding Images}">
+                                <ComboBox.DataTemplates>
+                                    <DataTemplate DataType="{x:Type commonViewModels:ImageViewModel}">
+                                        <Grid Width="128" Height="128" Classes="center">
+                                            <Image Source="{Binding Bitmap}" />
+                                            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ComboBox.DataTemplates>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="0" Content="Закрыть"
+                                Command="{Binding CloseCommand}" />
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="1" Content="Сохранить"
+                                IsEnabled="{Binding IsSaveEnabled}" Command="{Binding SaveCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:ProductEditDialogViewModel">
+            <Border Classes="panel" BorderBrush="{StaticResource mainBrush}" BorderThickness="5" CornerRadius="5">
+                <Grid Classes="m5" RowDefinitions="* Auto">
+                    <Grid Classes="m5" RowDefinitions="* Auto" ColumnDefinitions="* *">
+                        <StackPanel Grid.ColumnSpan="2">
+                            <TextBlock Text="Номер продукта" />
+                            <NumericUpDown Classes="h-stretch"
+                                           Minimum="0"
+                                           Value="{Binding Product.ProductId, Converter={x:Static c:NumericConverter.Instance}}" />
+                            <TextBlock Text="Название" />
+                            <TextBox Classes="h-stretch" Text="{Binding Product.Name}" />
+                            <TextBlock Text="Цена" />
+                            <NumericUpDown Classes="h-stretch"
+                                           Minimum="0"
+                                           Value="{Binding Product.Cost, Converter={x:Static c:NumericConverter.Instance}}" />
+                            <TextBlock Text="Еденицы измерения" />
+                            <ComboBox Classes="h-stretch"
+                                      Items="{Binding Source={x:Static viewModels:ProductAddDialogViewModel.Options}, Converter={x:Static c:UnitConverter.Instance}}"
+                                      SelectedItem="{Binding Product.Unit, Converter={x:Static c:UnitConverter.Instance}}" />
+                            <TextBlock Text="Изображение" />
+                            <ComboBox Classes="h-stretch"
+                                      SelectedItem="{Binding SelectedImage}"
+                                      Items="{Binding Images}">
+                                <ComboBox.DataTemplates>
+                                    <DataTemplate DataType="{x:Type commonViewModels:ImageViewModel}">
+                                        <Grid Width="128" Height="128" Classes="center">
+                                            <Image Source="{Binding Bitmap}" />
+                                            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ComboBox.DataTemplates>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="0" Content="Закрыть"
+                                Command="{Binding CloseCommand}" />
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="1" Content="Сохранить"
+                                IsEnabled="{Binding IsSaveEnabled}" Command="{Binding SaveCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type commonViewModels:ImageViewModel}">
+            <Grid Width="64" Height="64" Classes="center">
+                <Image Source="{Binding Bitmap}" />
+                <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:AccessRightViewModel}">
+            <TextBlock Text="{Binding Right}"/>
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:RegisterUserDialogViewModel">
+            <Border Classes="panel" BorderBrush="{StaticResource mainBrush}" BorderThickness="5" CornerRadius="5">
+                <Grid Classes="m5" RowDefinitions="* Auto">
+                    <Grid Classes="m5" RowDefinitions="* Auto" ColumnDefinitions="* *">
+                        <StackPanel Grid.ColumnSpan="2">
+                            <TextBlock Text="Логин" />
+                            <TextBox Classes="h-stretch"
+                                           Text="{Binding User.UserName}" />
+                            <TextBlock Text="Имя пользователя" />
+                            <TextBox Classes="h-stretch" Text="{Binding User.FullName}" />
+                            <TextBlock Text="Пароль" />
+                            <TextBox Classes="h-stretch"
+                                     Text="{Binding User.Password}" />
+                            <TextBlock Text="Администратор?" />
+                            <CheckBox IsChecked="{Binding IsAdmin}"/>
+                        </StackPanel>
+
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="0" Content="Закрыть"
+                                Command="{Binding CloseCommand}" />
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="1" Content="Сохранить"
+                                IsEnabled="{Binding IsSaveEnabled}" Command="{Binding SaveCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:UserEditDialogViewModel">
+            <Border Classes="panel" BorderBrush="{StaticResource mainBrush}" BorderThickness="5" CornerRadius="5">
+                <Grid Classes="m5" RowDefinitions="* Auto">
+                    <Grid Classes="m5" RowDefinitions="* Auto" ColumnDefinitions="* *">
+                        <StackPanel Grid.ColumnSpan="2">
+                            <TextBlock Text="Логин" />
+                            <TextBox Classes="h-stretch"
+                                     Text="{Binding User.UserName}" />
+                            <TextBlock Text="Имя пользователя" />
+                            <TextBox Classes="h-stretch" Text="{Binding User.FullName}" />
+                            <TextBlock Text="Пароль" />
+                            <TextBox Classes="h-stretch"
+                                     Text="{Binding User.Password}" />
+                            <TextBlock Text="Администратор?" />
+                            <CheckBox IsChecked="{Binding IsAdmin}"/>
+                        </StackPanel>
+
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="0" Content="Закрыть"
+                                Command="{Binding CloseCommand}" />
+                        <Button Classes="stretch" Grid.Row="1" Grid.Column="1" Content="Сохранить"
+                                IsEnabled="{Binding IsSaveEnabled}" Command="{Binding SaveCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type commonViewModels:CheckLineProductViewModel}">
+            <Border Classes="panel">
+                <Grid Classes="m5" ColumnDefinitions="Auto Auto * * Auto Auto Auto">
+                    <TextBlock Grid.Column="0" Text="{Binding Product.ProductId}"/>
+                    <ContentControl Classes="center" Width="64" Grid.Column="1" Content="{Binding Product.Image}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Product.Name}"/>
+                    <TextBlock Grid.Column="3" HorizontalAlignment="Right" Text="{Binding Product.Cost, StringFormat=\{0:0.00\}}"/>
+                    <TextBlock Grid.Column="4" HorizontalAlignment="Right" Text="{Binding TotalCost, StringFormat=(\{0:0.00\}) бел руб.}"/>
+                    <NumericUpDown Grid.Column="5" Classes="center" IsVisible="{Binding CanEditCount}" Minimum="0" Watermark="кол-во" Value="{Binding Count}"/>
+                    <TextBlock Grid.Column="6" Text="{Binding Product.Unit, Converter={x:Static c:UnitConverter.Instance}}"/>
+                </Grid>
+                
+                <Border.Styles>
+                    <Style Selector="Grid > TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Border.Styles>
+            </Border>
+        </DataTemplate>
+    </Application.DataTemplates>
+</Application>

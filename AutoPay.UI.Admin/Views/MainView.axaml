@@ -1,0 +1,52 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+             xmlns:views="clr-namespace:AutoPay.UI.Admin.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Admin.Views.MainView">
+    
+    <Design.DataContext>
+        <viewModels:MainViewModel/>
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="60 60 *">
+        
+        <Border Background="{StaticResource mainBrush}">
+            <StackPanel Orientation="Horizontal" Classes="center h1">
+                <TextBlock Text="Пользователь: "/>
+                <TextBlock Text="{Binding CurrentUserName}"/>
+                <TextBlock Text="-"/>
+                <TextBlock Text="{Binding CurrentFullName}"/>
+            </StackPanel>
+        </Border>
+        
+        <Border Grid.Row="1" Background="{StaticResource mainBrushLight}">
+            <Grid Classes="m5" ColumnDefinitions="* * * *">
+                <Button Grid.Column="0" Classes="stretch" Content="Изображения" Command="{Binding ImagesEditPageCommand}"/>
+                <Button Grid.Column="1" Classes="stretch" Content="Продукты" Command="{Binding ProductsEditPageCommand}"/>
+                <Button Grid.Column="2" Classes="stretch" Content="Пользователи" Command="{Binding UsersEditPageCommand}"/>
+                <Button Grid.Column="3" Classes="stretch" Content="Чеки" Command="{Binding ChecksEditPageCommand}"/>
+            </Grid>
+        </Border>
+        
+        <ContentControl Grid.Row="2" Content="{Binding NavigationService.Page}">
+            <ContentControl.DataTemplates>
+                <DataTemplate DataType="{x:Type viewModels:ImagesEditViewModel}">
+                    <views:ImagesEditView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:ProductsEditViewModel}">
+                    <views:ProductsEditView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:UsersEditViewModel}">
+                    <views:UsersEditView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:ChecksEditViewModel}">
+                    <views:ChecksEditView/>
+                </DataTemplate>
+            </ContentControl.DataTemplates>
+        </ContentControl>
+    </Grid>
+    
+</UserControl>

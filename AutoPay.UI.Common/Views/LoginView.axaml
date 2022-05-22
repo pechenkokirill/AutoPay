@@ -1,0 +1,29 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Client.Views.LoginView">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="avares://AutoPay.UI.Common/Styles/CommonStyles.axaml"/>
+    </UserControl.Styles>
+    
+    <Panel>
+       <Border Classes="center panel" MinWidth="400">
+           <Grid Classes="m5" RowDefinitions="*,*,*,*,*,*,*,*">
+               <TextBlock Grid.Row="0" Classes="center" Text="Вход" Margin="0 0 0 10"/>
+               <TextBox Grid.Row="1" Text="{Binding UserName}" Watermark="Имя пользователя"/>
+               <TextBox Grid.Row="2" Text="{Binding PassWord}" Watermark="Пароль" PasswordChar="*"/>
+               <StackPanel Grid.Row="3" Orientation="Horizontal">
+                   <CheckBox IsChecked="{Binding SavePassword}"/>
+                   <TextBlock Classes="v-center" Text="Сохранить пароль?"/>
+               </StackPanel>
+               <Button Classes="h-stretch" Grid.Row="4" Content="Войти" IsEnabled="{Binding !IsLoading}" Command="{Binding LoginCommand}"/>
+               <ProgressBar Grid.Row="5" IsVisible="{Binding IsLoading}" IsIndeterminate="True"/>
+               <TextBlock Classes="error" Grid.Row="6" IsVisible="{Binding Error, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Error}"/>
+           </Grid>
+       </Border>
+    </Panel>
+    
+</UserControl>

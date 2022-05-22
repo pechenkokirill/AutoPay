@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:commonViewModels="clr-namespace:AutoPay.UI.Client.ViewModels;assembly=AutoPay.UI.Common"
+        xmlns:commonViews="clr-namespace:AutoPay.UI.Client.Views;assembly=AutoPay.UI.Common"
+        xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+        xmlns:views="clr-namespace:AutoPay.UI.Admin.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AutoPay.UI.Admin.MainWindow"
+        Title="AutoPay.UI.Admin">
+    <ContentControl Content="{Binding NavigationService.Page}">
+        <ContentControl.DataTemplates>
+            <DataTemplate DataType="{x:Type commonViewModels:LoginViewModel}">
+                <commonViews:LoginView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
+                <views:MainView/>
+            </DataTemplate>
+        </ContentControl.DataTemplates>
+    </ContentControl>
+</Window>

@@ -1,0 +1,43 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+             xmlns:commonViewModel="clr-namespace:AutoPay.UI.Admin.ViewModels;assembly=AutoPay.UI.Common"
+             xmlns:commonViewModel1="clr-namespace:AutoPay.UI.Common.ViewModels;assembly=AutoPay.UI.Common"
+             xmlns:c="clr-namespace:AutoPay.UI.Common.Converters;assembly=AutoPay.UI.Common"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Admin.Views.ProductsEditView">
+
+    <Design.DataContext>
+        <viewModels:ProductsEditViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="* Auto">
+        <DataGrid Items="{Binding EditableItems}"
+                  SelectedItem="{Binding SelectedData}"
+                  ColumnWidth="*"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер продукта" Binding="{Binding ProductId}"/>
+                <DataGridTemplateColumn Header="Изображение">
+                    <DataTemplate DataType="{x:Type commonViewModel1:ImageViewModel}">
+                        <ContentControl Content="{Binding Bitmap}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Cost}"/>
+                <DataGridTextColumn Header="Еденица измерения" Binding="{Binding Unit, Converter={x:Static c:UnitConverter.Instance}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
+            <Button Grid.Column="0" Classes="stretch" Content="Удалить" IsEnabled="{Binding !!SelectedData}"
+                    Command="{Binding DeleteCommand}" />
+            <Button Grid.Column="1" Classes="stretch" Content="Изменить" IsEnabled="{Binding !!SelectedData}"
+                    Command="{Binding EditCommand}" />
+            <Button Grid.Column="2" Classes="stretch" Content="Добавить" Command="{Binding AddCommand}" />
+        </Grid>
+    </Grid>
+
+</UserControl>

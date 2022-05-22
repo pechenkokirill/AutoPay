@@ -1,0 +1,38 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Admin.ViewModels"
+             xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Admin.Views.UsersEditView">
+    <Design.DataContext>
+        <viewModels:UsersEditViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="* Auto">
+        <DataGrid Items="{Binding EditableItems}"
+                  SelectedItem="{Binding SelectedData}"
+                  ColumnWidth="*"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Логин" Binding="{Binding UserName}"/>
+                <DataGridTextColumn Header="Имя пользователя" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Хеш пароля" Binding="{Binding PasswordHash}"/>
+                <DataGridTemplateColumn Header="Права">
+                    <DataTemplate DataType="{x:Type viewModels:UserViewModel}">
+                        <ListBox Background="{StaticResource mainBrushLight}" Items="{Binding AccessRights}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
+            <Button Grid.Column="0" Classes="stretch" Content="Удалить" IsEnabled="{Binding !!SelectedData}"
+                    Command="{Binding DeleteCommand}" />
+            <Button Grid.Column="1" Classes="stretch" Content="Изменить" IsEnabled="{Binding !!SelectedData}"
+                    Command="{Binding EditCommand}" />
+            <Button Grid.Column="2" Classes="stretch" Content="Добавить" Command="{Binding AddCommand}" />
+        </Grid>
+    </Grid>
+</UserControl>

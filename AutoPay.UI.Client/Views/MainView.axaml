@@ -1,0 +1,73 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AutoPay.UI.Client.ViewModels"
+             xmlns:c="clr-namespace:AutoPay.UI.Common.Converters;assembly=AutoPay.UI.Common"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoPay.UI.Client.Views.MainView">
+    
+    <Design.DataContext>
+        <viewModels:MainViewModel/>
+    </Design.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource mainBrush}">
+            <ContentControl Content="{Binding CurrentUser}"/>
+        </Border>
+        
+        <Grid Grid.Row="1" RowDefinitions="Auto *" Classes="bg-l">
+            <Border Grid.Row="0">
+                <Grid Classes="m5" ColumnDefinitions="* Auto Auto" RowDefinitions="* *" IsEnabled="{Binding !IsProductsLoading}">
+                    <AutoCompleteBox Grid.Column="0"
+                                     Watermark="Поиск"
+                                     SelectedItem="{Binding SelectedProduct}"
+                                     Items="{Binding AllProducts}"
+                                     FilterMode="Contains">
+                        <AutoCompleteBox.ValueMemberBinding>
+                            <MultiBinding StringFormat="\{0\}\, \{1\}">
+                                <Binding Path="ProductId"/>
+                                <Binding Path="Name"/>
+                            </MultiBinding>
+                        </AutoCompleteBox.ValueMemberBinding>
+                    </AutoCompleteBox>
+                    <Button Grid.Column="1" Classes="block" Content="Обновить" IsEnabled="{Binding !IsProductsLoading}" Command="{Binding ReloadProductsCommand}"/>
+                    <Button Grid.Column="2" Classes="block" Content="Добавить" IsEnabled="{Binding AddCommandCanExecute}" Command="{Binding AddProductCommand}"/>
+                    
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Classes="m5" IsVisible="{Binding IsProductsLoading}">
+                        <TextBlock Text="Загрузка продуктов..."/>
+                        <ProgressBar IsIndeterminate="True" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <ListBox Items="{Binding CheckProducts}" Grid.Row="1"/>
+        </Grid>
+        
+        <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource mainBrushLight}">
+            <Grid RowDefinitions="* 60 60 60" Classes="m5">
+                <StackPanel Grid.Row="1" Classes="center" Orientation="Horizontal">
+                    <TextBlock Text="Итого: "/>
+                    <TextBlock Text="{Binding TotalPayment, StringFormat=\{0:0.00\}}"/>
+                    <TextBlock Text=" бел руб."/>
+                </StackPanel>
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="Оплачено: "/>
+                    <NumericUpDown  Classes="center h-stretch" Minimum="{Binding TotalPayment}" Watermark="Оплачено руб." Value="{Binding ActualPayment, Converter={x:Static c:NumericConverter.Instance}}"/>
+                </StackPanel>
+                <Button Grid.Row="3" Classes="stretch" Command="{Binding IssueCheckCommand}">
+                    <TextBlock Classes="center h1" Text="Выдать чек"/>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
